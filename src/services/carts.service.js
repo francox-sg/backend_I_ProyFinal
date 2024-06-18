@@ -41,3 +41,16 @@ export const addProductToCart = async(cartId, prodId)=>{
         console.log(error);
     }
 }
+
+export const removeProductOfCartById = async(cartId, prodId)=>{
+    
+    
+    try {
+        
+            const resp= await CartDaoMongoDB.removeProductOfCartById(cartId, prodId);
+            return resp
+        
+    } catch (error) {
+        console.log(error);
+    }
+}

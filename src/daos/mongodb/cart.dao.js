@@ -25,7 +25,7 @@ class CartManager{
     }
     //Metodo Devuelve productos por ID de carrito
     async getCartProductsById(cartId){
-        return await CartModel.findById(cartId)//.populate("products.product");
+        return await CartModel.findById(cartId).populate("products.product");
 
     }
 
@@ -61,17 +61,17 @@ class CartManager{
             
             //Existencia de Prod en Cart
             const existProd= await this.existProdInCart(cartId, prodId)
-            console.log("existProd: ",existProd);
-
+            
             if(existProd){
-                console.log("existe");
+                let index = existProd.products.findIndex(prod =>{return prod.product.toString() ===prodId})
+                console.log("index: ",index);
                 return await CartModel.findOneAndUpdate(
                         { _id: cartId, 'products.product': prodId },
-                        { $set: { 'products.$.quantity': existProd.products[0].quantity + 1 } },
+                        { $set: { 'products.$.quantity': existProd.products[index].quantity + 1 } },
                         { new: true }
                     );
             }else{
-                console.log("No existe");
+                
                 return await CartModel.findByIdAndUpdate(
                     cartId,
                     { $push: { products: { product: prodId } } },

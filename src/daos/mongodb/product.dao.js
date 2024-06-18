@@ -5,9 +5,15 @@ class ProductManager{
     
 
     //Metodo Obtener Productos
-    async getProducts(limit = 10, page = 1, sort , query= undefined){
+    async getProducts(limit = 10, page = 1, sort , query= undefined, category, stock){
         
-        const queryFilter =  query ? { 'title': query } : {};
+        const queryFilter = {} 
+        query ? queryFilter.title= query : null
+        category ? queryFilter.category= category : null
+        stock ? queryFilter.stock= {$gt: stock} : null
+
+
+        console.log(queryFilter);
         let sortOrder= {}
         if(sort){
             sortOrder.price = sort === "asc" ? 1 : sort === "des" ? -1 : null

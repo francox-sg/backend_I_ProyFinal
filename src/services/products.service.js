@@ -1,9 +1,9 @@
 import { ProductDaoMongoDB } from "../daos/mongodb/product.dao.js";
 
 
-export const getProducts = async(limit,  page, sort, query)=>{
+export const getProducts = async(limit,  page, sort, query, category, stock)=>{
     try {
-        return await ProductDaoMongoDB.getProducts(limit,  page, sort, query);
+        return await ProductDaoMongoDB.getProducts(limit,  page, sort, query, category, stock);
     } catch (error) {
         console.log(error);
     }

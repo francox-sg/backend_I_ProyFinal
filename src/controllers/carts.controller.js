@@ -29,13 +29,13 @@ export const getCartProductsById =  async (req, res)=>{
 
 }
 
-export const addProductToCart =  async (req, res)=>{async (req, res)=>{
+export const addProductToCart =  async (req, res)=>{
     const {cid, pid} = req.params;
     
     try{
         
             const cart = await services.addProductToCart(cid, pid)
-            if(cart != -1){
+            if(cart != null){
                 res.status(200).json(cart)
             }else{
                 res.status(404).send("El cart no existe")
@@ -47,5 +47,25 @@ export const addProductToCart =  async (req, res)=>{async (req, res)=>{
     }
 
 }
+
+
+export const removeProductOfCartById =  async (req, res)=>{
+    const {cid, pid} = req.params;
+    
+    try{
+        
+            const cart = await services.removeProductOfCartById(cid, pid)
+            if(cart != null){
+                res.status(200).json(cart)
+            }else{
+                res.status(404).send("El cart no existe")
+            }
+        }
+    
+    catch(error){
+        res.status(404).json({msj:"error"})
+    }
+
+
 
 }

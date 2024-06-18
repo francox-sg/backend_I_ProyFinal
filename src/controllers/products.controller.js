@@ -5,11 +5,11 @@ import { socketServer } from '../../serverExpress.js'; */
 import * as services from '../services/products.service.js'
 
 export const getProducts = async(req, res)=>{
-    const {limit, page, sort, query} = req.query;
+    const {limit, page, sort, query, category, stock} = req.query;
     
     try{
 
-        const respService = await services.getProducts(limit, page, sort, query)
+        const respService = await services.getProducts(limit, page, sort, query, category, stock)
         
         let stringPrevPage= `http://localhost:8080/api/products/`
         let stringNextPage= `http://localhost:8080/api/products/`
@@ -44,6 +44,30 @@ export const getProducts = async(req, res)=>{
             }else{
                 stringPrevPage+=`&query=${query}`
                 stringNextPage+=`&query=${query}`
+            }
+        }
+
+        //category
+        if(category){
+            if(!hayParam){
+                stringPrevPage+=`?category=${category}`
+                stringNextPage+=`?category=${category}`
+                hayParam=true
+            }else{
+                stringPrevPage+=`&category=${category}`
+                stringNextPage+=`&category=${category}`
+            }
+        }
+
+        //stock
+        if(stock){
+            if(!hayParam){
+                stringPrevPage+=`?stock=${stock}`
+                stringNextPage+=`?stock=${stock}`
+                hayParam=true
+            }else{
+                stringPrevPage+=`&stock=${stock}`
+                stringNextPage+=`&stock=${stock}`
             }
         }
 
