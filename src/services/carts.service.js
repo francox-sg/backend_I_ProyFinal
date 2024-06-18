@@ -25,13 +25,13 @@ export const getCartProductsById = async(id)=>{
     }
 }
 
-export const addProductToCart = async(cartId, prodId)=>{
+export const addProductToCart = async(cartId, prodId, quantity)=>{
     
     
     try {
         const prodExists = await ProductDaoMongoDB.getProductById(prodId)
         if(prodExists){
-            const resp= await CartDaoMongoDB.addProductToCart(cartId, prodId);
+            const resp= await CartDaoMongoDB.addProductToCart(cartId, prodId, quantity);
             return resp
         }else{
             return null
@@ -48,6 +48,19 @@ export const removeProductOfCartById = async(cartId, prodId)=>{
     try {
         
             const resp= await CartDaoMongoDB.removeProductOfCartById(cartId, prodId);
+            return resp
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const updateCartById = async(cartId, obj)=>{
+    
+    
+    try {
+        
+            const resp= await CartDaoMongoDB.updateCartById(cartId, obj);
             return resp
         
     } catch (error) {

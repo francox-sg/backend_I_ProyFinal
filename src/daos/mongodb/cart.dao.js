@@ -53,7 +53,7 @@ class CartManager{
     }
 
     //Metodo Agregar Producto a Cart
-    async addProductToCart(cartId, prodId){
+    async addProductToCart(cartId, prodId, quantity =1){
         //Existencia de Cart
         const cart = await this.getCartById(cartId)
         
@@ -67,14 +67,14 @@ class CartManager{
                 console.log("index: ",index);
                 return await CartModel.findOneAndUpdate(
                         { _id: cartId, 'products.product': prodId },
-                        { $set: { 'products.$.quantity': existProd.products[index].quantity + 1 } },
+                        { $set: { 'products.$.quantity': existProd.products[index].quantity + quantity } },
                         { new: true }
                     );
             }else{
                 
                 return await CartModel.findByIdAndUpdate(
                     cartId,
-                    { $push: { products: { product: prodId } } },
+                    { $push: { products: { product: prodId, quantity: quantity } } },
                     { new: true }
                 )
             }
@@ -86,6 +86,12 @@ class CartManager{
 
             }
 
+    //Metodo Actualizar Cart por ID
+    async updateCartById(cartId, obj){
+        console.log(obj);
+        return await CartModel.findByIdAndUpdate(cartId,{$set: {products: obj}},  {new:true})
+
+    }
 
 }
 

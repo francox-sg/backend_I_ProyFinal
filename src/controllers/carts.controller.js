@@ -31,10 +31,11 @@ export const getCartProductsById =  async (req, res)=>{
 
 export const addProductToCart =  async (req, res)=>{
     const {cid, pid} = req.params;
+    const {quantity} = req.query;
     
     try{
         
-            const cart = await services.addProductToCart(cid, pid)
+            const cart = await services.addProductToCart(cid, pid, Number(quantity))
             if(cart != null){
                 res.status(200).json(cart)
             }else{
@@ -68,4 +69,22 @@ export const removeProductOfCartById =  async (req, res)=>{
 
 
 
+}
+export const updateCartById =  async (req, res)=>{
+    const {cid} = req.params;
+    const obj = req.body;
+    console.log("controller", obj);
+    try{
+        
+            const cart = await services.updateCartById(cid, obj)
+            if(cart != null){
+                res.status(200).json(cart)
+            }else{
+                res.status(404).send("El cart no existe")
+            }
+        }
+    
+    catch(error){
+        res.status(404).json({msj:"error"})
+    }
 }
