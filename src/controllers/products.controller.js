@@ -5,9 +5,89 @@ import { socketServer } from '../../serverExpress.js'; */
 import * as services from '../services/products.service.js'
 
 export const getProducts = async(req, res)=>{
-    const {limit} = req.query;
+    const {limit, page, sort, query} = req.query;
+    
     try{
-        res.status(200).json( await services.getProducts(limit))
+
+        const respService = await services.getProducts(limit, page, sort, query)
+        
+        let stringPrevPage= `http://localhost:8080/api/products/`
+        let stringNextPage= `http://localhost:8080/api/products/`
+
+        let hayParam=false;
+
+        //Limit
+        if(limit){
+            hayParam=true
+            stringPrevPage+=`?limit=${limit}`
+            stringNextPage+=`?limit=${limit}`
+        }
+
+        //sort
+        if(sort){
+            if(!hayParam){
+                stringPrevPage+=`?sort=${sort}`
+                stringNextPage+=`?sort=${sort}`
+                hayParam=true
+            }else{
+                stringPrevPage+=`&sort=${sort}`
+                stringNextPage+=`&sort=${sort}`
+            }
+        }
+
+        //query
+        if(query){
+            if(!hayParam){
+                stringPrevPage+=`?query=${query}`
+                stringNextPage+=`?query=${query}`
+                hayParam=true
+            }else{
+                stringPrevPage+=`&query=${query}`
+                stringNextPage+=`&query=${query}`
+            }
+        }
+
+
+        //page
+        if(respService.totalPages > 1){
+            
+            if(!hayParam){
+                stringPrevPage+=`?page=${respService.page -1}`
+                stringNextPage+=`?page=${respService.page +1}`
+                hayParam=true
+            }else{
+                stringPrevPage+=`&page=${respService.page -1}`
+                stringNextPage+=`&page=${respService.page +1}`
+            }
+            
+            
+            if(respService.page===1){
+                stringPrevPage= null
+            }
+            if(respService.page===respService.totalPages){
+                stringNextPage= null
+            }
+        }else{
+            stringPrevPage= null
+            stringNextPage= null
+        }
+        console.log("prev: ",stringPrevPage);
+        console.log("nexy: ",stringNextPage);
+
+        let resp ={
+            status:         "success",
+            paylaod:        respService.docs,
+            totalPages:     respService.totalPages,
+            prevPage:       respService.prevPage,
+            nextPage:       respService.nextPage,
+            page:           respService.page,
+            hasPrevPage:    respService.hasPrevPage,
+            hasNextPage:    respService.hasNextPage,
+            prevLink:       stringPrevPage,
+            nextLink:       stringNextPage,
+
+        }
+        res.status(200).json( resp)
     }
     catch(error){
         res.status(404).json({msj:"error"})

@@ -5,9 +5,18 @@ class ProductManager{
     
 
     //Metodo Obtener Productos
-    async getProducts(limit = undefined){
+    async getProducts(limit = 10, page = 1, sort , query= undefined){
         
-        return await ProductModel.find({})
+        const queryFilter =  query ? { 'title': query } : {};
+        let sortOrder= {}
+        if(sort){
+            sortOrder.price = sort === "asc" ? 1 : sort === "des" ? -1 : null
+        }
+        
+        return await ProductModel.paginate(queryFilter, {page, limit, sort: sortOrder})
+
+
+
     }
 
     //Metodo Obtener Producto Por ID

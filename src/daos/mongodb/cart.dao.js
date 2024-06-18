@@ -99,7 +99,7 @@ import { initMongoDB } from "../../db/database.js";
 
 //Conexion con DB Mongo
 
-initMongoDB()
+//initMongoDB()
 
 const test = async()=>{
     try {
@@ -112,7 +112,7 @@ const test = async()=>{
     }
 }
 
-test()
+//test()
 
 
 

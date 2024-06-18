@@ -13,7 +13,7 @@ import { initMongoDB } from './src/db/database.js';
 //Conexion con DB Mongo
 initMongoDB()
 
-const PORT= 8082;
+const PORT= 8080;
 
 const app = express();
 
