@@ -13,8 +13,6 @@ router.get('/', controller.getProducts)
 // Devolver Producto por ID
 router.get('/:pid', controller.getProductById)
 
-
-
 //Agregar Producto
 router.post('/', validarNewProduct, controller.addProduct)
 

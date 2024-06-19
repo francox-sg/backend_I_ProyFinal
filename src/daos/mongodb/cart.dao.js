@@ -53,7 +53,8 @@ class CartManager{
     }
 
     //Metodo Agregar Producto a Cart
-    async addProductToCart(cartId, prodId, quantity =1){
+    async addProductToCart(cartId, prodId, quantity){
+        quantity = quantity ? quantity: 1
         //Existencia de Cart
         const cart = await this.getCartById(cartId)
         
@@ -84,15 +85,55 @@ class CartManager{
 
         return null
 
-            }
+    }
 
     //Metodo Actualizar Cart por ID
     async updateCartById(cartId, obj){
         console.log(obj);
         return await CartModel.findByIdAndUpdate(cartId,{$set: {products: obj}},  {new:true})
+        
+    }
+    //Metodo Actualizar cantidad de producto en cart
+    async updateProductQuantityOfCartById(cartId, prodId, quantity =1){
+        //Existencia de Cart
+        const cart = await this.getCartById(cartId)
+        
+        if(cart != null){
+            
+            //Existencia de Prod en Cart
+            const existProd= await this.existProdInCart(cartId, prodId)
+            
+            if(existProd){
+                let index = existProd.products.findIndex(prod =>{return prod.product.toString() ===prodId})
+                console.log("index: ",index);
+                return await CartModel.findOneAndUpdate(
+                        { _id: cartId, 'products.product': prodId },
+                        { $set: { 'products.$.quantity': quantity } },
+                        { new: true }
+                    );
+            }
+
+            
+        }
+
+        return null
 
     }
-
+    
+    
+    
+        //Metodo Borrar todos los productos de cart
+        async deleteAllProductsOfCart(cartId){
+            
+            return await CartModel.findByIdAndUpdate(cartId,{$set: {products: []}},  {new:true})
+            
+        }
+        
+    
+    
+    
+    
+    
 }
 
 

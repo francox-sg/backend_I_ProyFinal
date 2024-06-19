@@ -47,8 +47,8 @@ export const removeProductOfCartById = async(cartId, prodId)=>{
     
     try {
         
-            const resp= await CartDaoMongoDB.removeProductOfCartById(cartId, prodId);
-            return resp
+        const resp= await CartDaoMongoDB.removeProductOfCartById(cartId, prodId);
+        return resp
         
     } catch (error) {
         console.log(error);
@@ -60,8 +60,38 @@ export const updateCartById = async(cartId, obj)=>{
     
     try {
         
-            const resp= await CartDaoMongoDB.updateCartById(cartId, obj);
+        const resp= await CartDaoMongoDB.updateCartById(cartId, obj);
+        return resp
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const updateProductQuantityOfCartById = async(cartId, prodId, quantity)=>{
+    
+    
+    try {
+        
+        
+            const resp= await CartDaoMongoDB.updateProductQuantityOfCartById(cartId, prodId, quantity);
             return resp
+        
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const deleteAllProductsOfCart = async(cartId)=>{
+    
+    
+    try {
+        
+        
+            const resp= await CartDaoMongoDB.deleteAllProductsOfCart(cartId);
+            return resp
+        
         
     } catch (error) {
         console.log(error);

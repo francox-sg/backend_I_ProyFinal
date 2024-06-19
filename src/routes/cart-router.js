@@ -16,10 +16,15 @@ router.get('/:cid', controller.getCartProductsById)
 router.post('/:cid/product/:pid', controller.addProductToCart)
 
 //Borrar Productos de Cart especifico
-router.delete('/:cid/product/:pid', controller.removeProductOfCartById)
+router.delete('/:cid/products/:pid', controller.removeProductOfCartById)
 
 //Actualizar Cart por ID --> por body se pasa un array de products
 router.put('/:cid', controller.updateCartById)
 
+//Actualizar quantity de prod por Id y ID de cart
+router.put('/:cid/products/:pid', controller.updateProductQuantityOfCartById)
+
+//Borrar todos los Productos del Cart
+router.delete('/:cid', controller.deleteAllProductsOfCart)
 
 export default router;

@@ -114,7 +114,12 @@ export const getProducts = async(req, res)=>{
         res.status(200).json( resp)
     }
     catch(error){
-        res.status(404).json({msj:"error"})
+        let resp ={
+            status:         "error",
+            paylaod:        null
+
+        }
+        res.status(404).json(resp)
     }
 }
 
@@ -152,7 +157,7 @@ export const addProduct =  async(req, res)=>{
     if(category != undefined)      {newProductValues["category"]    = category}
     if(thumbnails != undefined)      {newProductValues["thumbnails"]    = thumbnails}
 
-
+console.log(newProductValues);
     try{
         
         res.status(200).json( await services.addProduct(newProductValues))
